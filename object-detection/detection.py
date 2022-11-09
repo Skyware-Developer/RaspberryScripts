@@ -24,6 +24,9 @@ from tflite_support.task import processor
 from tflite_support.task import vision
 import utils
 
+import board
+import digitalio
+
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
@@ -66,6 +69,9 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         base_options=base_options, detection_options=detection_options)
     detector = vision.ObjectDetector.create_from_options(options)
 
+    led = digitalio.DigitalInOut(board.D23)
+    led.direction = digitalio.Direction.OUTPUT
+
     # Continuously capture images from the camera and run inference
     while cap.isOpened():
         success, image = cap.read()
@@ -85,6 +91,11 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
         # Run object detection estimation using the model.
         detection_result = detector.detect(input_tensor)
+        print(detection_result)
+
+        ##
+        # Insert LED Logic here
+        ##
 
         # Draw keypoints and edges on input image
         image = utils.visualize(image, detection_result)
