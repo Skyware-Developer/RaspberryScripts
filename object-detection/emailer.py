@@ -21,8 +21,11 @@ import lxml.html
 GOOGLE_ACCOUNTS_BASE_URL = 'https://accounts.google.com'
 REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
+## Replace the following with your OAUTH credentials
 GOOGLE_CLIENT_ID = '<FILL ME IN>'
 GOOGLE_CLIENT_SECRET = '<FILL ME IN>'
+
+## Refresh token will be asked when running the script for the first time, run it, open the URL, authorise and replace none for the value 
 GOOGLE_REFRESH_TOKEN = None
 
 
