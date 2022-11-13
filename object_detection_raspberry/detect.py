@@ -24,6 +24,8 @@ from tflite_support.task import processor
 from tflite_support.task import vision
 import utils
 
+from emailerv2 import send_email
+
 import board
 import digitalio
 
@@ -81,6 +83,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             )
 
         counter += 1
+        copyImage = image
         image = cv2.flip(image, 1)
 
         # Convert the image from BGR to RGB as required by the TFLite model.
@@ -95,8 +98,14 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         if len(detection_result.detections) > 0:
             if detection_result.detections[0].categories[0].category_name == 'person':
                 print(detection_result.detections[0].categories[0])
+                print(counter)
+                if counter == 10:
+                    print("EMAIL SENT")
+                    cv2.imwrite("intruder.png", rgb_image)
+                    send_email('Person Detected', 'picture')
                 led.value = True
         else:
+            counter = 0
             led.value = False
 
         ##
